@@ -6,26 +6,46 @@ using namespace std;
 
 int main()
 {
+    int numAlumnos;
+    int limiteAlumnos = 100;
+    int intentos = 0;
+    const int maxIntentos = 5;
 
-    // Variables
-    int numAlumnos = 0;
-
-    while (true) // Bucle infinito para seguir pidiendo entrada hasta que se ingrese un número válido
+    // Pedir al usuario un número válido
+    while (intentos < maxIntentos)
     {
-        cout << "Ingrese el número de alumnos (debe ser un número positivo): ";
+        cout << "Ingrese el número de alumnos (entre 1 y " << limiteAlumnos << "): ";
         cin >> numAlumnos;
 
-        if (cin.fail() || numAlumnos <= 0)
-        {                                                             // Verifica si la entrada es inválida o no positiva
-            cin.clear();                                              // Limpia la bandera de error en cin
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); // Descartar entrada inválida
-            cout << "Entrada inválida. Por favor, ingrese un número positivo." << endl;
+        // Verifiar si el usuario escribió un número válido
+        if (cin.fail())
+        {
+            cin.clear();                                         // Limpia el error
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el teclado
+            cout << "Eso no es un número. Inténtelo de nuevo." << endl;
+            intentos++;
+        }
+        else if (numAlumnos <= 0 || numAlumnos > limiteAlumnos)
+        {
+            cout << "El número debe estar entre 1 y " << limiteAlumnos << "." << endl;
+            intentos++;
         }
         else
         {
-            break; // Salir del bucle si se ingresa un número válido
+            // Si es válido salimos del bucle
+            break;
         }
+
+        cout << "Intento " << intentos << " de " << maxIntentos << "." << endl;
     }
+
+    if (intentos == maxIntentos)
+    {
+        cout << "Demasiados intentos fallidos. El programa finalizo." << endl;
+        return 1; // Salir con error
+    }
+
+    cout << "Número de alumnos ingresado correctamente: " << numAlumnos << endl;
 
     return 0;
 }
